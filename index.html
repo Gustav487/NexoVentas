@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>NexoVentas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=3" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     LOGIN SCREEN
+═══════════════════════════════════════════════ -->
+<div id="screen-login" class="screen active">
+  <div class="login-wrap">
+    <div class="login-logo">
+      <span class="logo-mark">N</span>
+      <span class="logo-text">NexoVentas</span>
+    </div>
+    <p class="login-sub">Supervisión de visitas de mercado</p>
+    <button id="btn-google-login" class="btn-google">
+      <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.7 33.1 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.7-.1-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 16 19 13 24 13c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 10-1.9 13.6-5L31.8 34c-2.1 1.5-4.7 2-7.8 2-5.3 0-9.7-2.9-11.3-7l-6.5 5C9.5 39.6 16.3 44 24 44z"/><path fill="#1565C0" d="M43.6 20H24v8h11.3c-.7 2.1-2.1 3.9-3.9 5.1l5.8 5c3.5-3.2 5.8-8 5.8-14.1 0-1.3-.1-2.7-.1-4z"/></svg>
+      Entrar con Google
+    </button>
+    <p id="login-error" class="login-error hidden"></p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     MAIN APP
+═══════════════════════════════════════════════ -->
+<div id="screen-app" class="screen hidden">
+
+  <!-- TOP NAV -->
+  <header class="topnav">
+    <div class="topnav-left">
+      <span class="logo-mark sm">N</span>
+      <span class="app-title">NexoVentas</span>
+    </div>
+    <div class="topnav-center">
+      <!-- Turno + Semana selectors -->
+      <div class="session-selectors">
+        <div class="seg-control" id="seg-dia">
+          <button class="seg-btn active" data-val="A">Lunes A</button>
+          <button class="seg-btn" data-val="B">Lunes B</button>
+        </div>
+        <div class="seg-control" id="seg-semana">
+          <button class="seg-btn active" data-val="A">Semana A</button>
+          <button class="seg-btn" data-val="B">Semana B</button>
+        </div>
+      </div>
+    </div>
+    <div class="topnav-right">
+      <span id="nav-role-badge" class="role-badge"></span>
+      <span id="nav-user-name" class="nav-user"></span>
+      <button id="btn-theme" class="btn-theme-toggle" title="Cambiar tema" onclick="toggleTheme()" aria-label="Cambiar tema">
+        <span class="theme-knob"></span>
+      </button>
+      <button id="btn-logout" class="btn-icon" title="Cerrar sesión">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- TAB BAR -->
+  <nav class="tabbar">
+    <button class="tab-btn active" data-tab="protocolo">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 12l2 2 4-4"/></svg>
+      Protocolo
+    </button>
+    <button class="tab-btn" data-tab="productos">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      Productos
+    </button>
+    <button class="tab-btn" data-tab="competidores">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      Competidores
+    </button>
+    <button class="tab-btn tab-graficas hidden" data-tab="graficas">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+      Gráficas
+    </button>
+    <button class="tab-btn tab-config hidden" data-tab="config">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      Config
+    </button>
+  </nav>
+
+  <!-- CONTENT AREA -->
+  <main class="content-area">
+
+    <!-- ── TAB: PROTOCOLO ── -->
+    <div id="tab-protocolo" class="tab-panel active">
+      <div class="panel-header">
+        <h2 class="panel-title">Protocolo de Visita</h2>
+        <div class="panel-actions">
+          <span class="session-badge" id="badge-session"></span>
+          <button class="btn-sm btn-save" id="btn-save-protocolo">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg>
+            Guardar
+          </button>
+        </div>
+      </div>
+
+      <div class="legend-bar">
+        <span class="legend-item"><span class="cell-demo v1">✓</span> Disponible</span>
+        <span class="legend-item"><span class="cell-demo v2">✗</span> No disponible</span>
+        <span class="legend-item"><span class="cell-demo v0">—</span> No comercializa</span>
+      </div>
+
+      <div class="table-scroll-wrap" id="protocolo-table-wrap">
+        <table class="data-table" id="protocolo-table">
+          <thead id="protocolo-thead"></thead>
+          <tbody id="protocolo-tbody"></tbody>
+          <tfoot id="protocolo-tfoot"></tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── TAB: PRODUCTOS ── -->
+    <div id="tab-productos" class="tab-panel hidden">
+      <div class="panel-header">
+        <h2 class="panel-title">Productos Propios</h2>
+        <div class="panel-actions">
+          <span class="session-badge" id="badge-session-prod"></span>
+          <button class="btn-sm btn-save" id="btn-save-productos">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg>
+            Guardar
+          </button>
+        </div>
+      </div>
+
+      <div class="legend-bar">
+        <span class="legend-item"><span class="cell-demo v1">✓</span> Vende y disponible</span>
+        <span class="legend-item"><span class="cell-demo v2">✗</span> Vende, no disponible</span>
+        <span class="legend-item"><span class="cell-demo v0">—</span> No comercializa</span>
+      </div>
+
+      <div class="products-grid-wrap">
+        <div class="products-sub-label">Cobertura</div>
+        <div class="table-scroll-wrap">
+          <table class="data-table" id="cobertura-table">
+            <thead id="cobertura-thead"></thead>
+            <tbody id="cobertura-tbody"></tbody>
+            <tfoot id="cobertura-tfoot"></tfoot>
+          </table>
+        </div>
+        <div class="products-sub-label" style="margin-top: 1.5rem;">Disponibilidad</div>
+        <div class="table-scroll-wrap">
+          <table class="data-table" id="disponibilidad-table">
+            <thead id="disponibilidad-thead"></thead>
+            <tbody id="disponibilidad-tbody"></tbody>
+            <tfoot id="disponibilidad-tfoot"></tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB: COMPETIDORES ── -->
+    <div id="tab-competidores" class="tab-panel hidden">
+      <div class="panel-header">
+        <h2 class="panel-title">Competidores</h2>
+        <div class="panel-actions">
+          <span class="session-badge" id="badge-session-comp"></span>
+          <button class="btn-sm btn-save" id="btn-save-competidores">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg>
+            Guardar
+          </button>
+        </div>
+      </div>
+      <div class="legend-bar">
+        <span class="legend-item"><span class="cell-demo v1">✓</span> Disponible</span>
+        <span class="legend-item"><span class="cell-demo v2">✗</span> No disponible</span>
+        <span class="legend-item"><span class="cell-demo v0">—</span> No comercializa</span>
+      </div>
+      <div class="products-grid-wrap">
+        <div class="comp-section-label">Cobertura</div>
+        <div class="table-scroll-wrap" id="comp-cob-wrap">
+          <table class="data-table" id="comp-cob-table">
+            <thead id="comp-cob-thead"></thead>
+            <tbody id="comp-cob-tbody"></tbody>
+          </table>
+        </div>
+        <div class="comp-section-label" style="margin-top: 1.5rem;">Disponibilidad</div>
+        <div class="table-scroll-wrap" id="comp-disp-wrap">
+          <table class="data-table" id="comp-disp-table">
+            <thead id="comp-disp-thead"></thead>
+            <tbody id="comp-disp-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB: GRÁFICAS ── -->
+    <div id="tab-graficas" class="tab-panel hidden">
+      <div class="panel-header">
+        <h2 class="panel-title">Gráficas de Resultados</h2>
+        <div class="panel-actions">
+          <button class="btn-sm btn-export" id="btn-export-excel">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            Excel
+          </button>
+          <button class="btn-sm btn-export" id="btn-export-pdf">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+            PDF
+          </button>
+        </div>
+      </div>
+      <!-- Chart type selector -->
+      <div class="chart-type-bar">
+        <span class="chart-type-label">Tipo de gráfica:</span>
+        <div class="seg-control" id="seg-chart-type">
+          <button class="seg-btn active" data-chart-type="bar">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="12" width="4" height="9"/><rect x="10" y="7" width="4" height="14"/><rect x="17" y="3" width="4" height="18"/></svg>
+            Barras
+          </button>
+          <button class="seg-btn" data-chart-type="line">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+            Líneas
+          </button>
+          <button class="seg-btn" data-chart-type="pie">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+            Sectores
+          </button>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-card-title">% Cobertura por Sección del Protocolo</div>
+          <div class="chart-canvas-wrap"><canvas id="chart-cobertura-seccion"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-card-title">% Cobertura vs Disponibilidad por Producto</div>
+          <div class="chart-canvas-wrap"><canvas id="chart-disp-productos"></canvas></div>
+        </div>
+        <div class="chart-card chart-full">
+          <div class="chart-card-title">% Cobertura vs Disponibilidad por Empresa</div>
+          <div class="chart-canvas-wrap"><canvas id="chart-cliente-comparativa"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB: CONFIG ── -->
+    <div id="tab-config" class="tab-panel hidden">
+      <div class="panel-header">
+        <h2 class="panel-title">Configuración</h2>
+        <div class="panel-actions">
+          <button class="btn-sm btn-save" data-action="save-all-config">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg>
+            Guardar todo
+          </button>
+        </div>
+      </div>
+
+      <!-- Config sections nav -->
+      <div class="config-nav">
+        <button class="config-nav-btn active" data-section="clientes">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Clientes
+        </button>
+        <button class="config-nav-btn" data-section="productos">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>
+          Productos
+        </button>
+        <button class="config-nav-btn" data-section="protocolo">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 12l2 2 4-4"/></svg>
+          Protocolo
+        </button>
+        <button class="config-nav-btn" data-section="competidores">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          Competidores
+        </button>
+        <button class="config-nav-btn" data-section="usuarios" id="config-nav-usuarios">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>
+          Usuarios
+        </button>
+      </div>
+
+      <!-- Clientes section -->
+      <div class="config-section active" id="config-section-clientes">
+        <div class="config-section-header">
+          <div>
+            <h3 class="config-section-title">Clientes</h3>
+            <p class="config-section-desc">Lista de clientes visitados en la ruta. Puedes renombrar, reordenar, agregar o eliminar.</p>
+          </div>
+          <button class="btn-add" data-action="add-cliente">+ Agregar cliente</button>
+        </div>
+        <div id="list-clientes" class="config-list"></div>
+      </div>
+
+      <!-- Productos section -->
+      <div class="config-section hidden" id="config-section-productos">
+        <div class="config-section-header">
+          <div>
+            <h3 class="config-section-title">Productos Propios</h3>
+            <p class="config-section-desc">Productos de tu empresa que se evalúan en cobertura y disponibilidad.</p>
+          </div>
+          <button class="btn-add" data-action="add-producto">+ Agregar producto</button>
+        </div>
+        <div id="list-productos" class="config-list"></div>
+      </div>
+
+      <!-- Protocolo section -->
+      <div class="config-section hidden" id="config-section-protocolo">
+        <div class="config-section-header">
+          <div>
+            <h3 class="config-section-title">Tareas del Protocolo</h3>
+            <p class="config-section-desc">Tareas agrupadas por sección. Cada tarea se evalúa por cliente en el Protocolo.</p>
+          </div>
+          <button class="btn-add" data-action="add-tarea">+ Agregar tarea</button>
+        </div>
+        <div id="list-tareas" class="config-list config-tareas-list"></div>
+      </div>
+
+      <!-- Competidores section -->
+      <div class="config-section hidden" id="config-section-competidores">
+        <div class="config-section-header">
+          <div>
+            <h3 class="config-section-title">Competidores</h3>
+            <p class="config-section-desc">Hasta 6 competidores, cada uno con hasta 10 productos. Se comparan en la tab Competidores.</p>
+          </div>
+          <button class="btn-add" data-action="add-competidor">+ Agregar competidor</button>
+        </div>
+        <div id="list-competidores-config" class="config-list"></div>
+      </div>
+
+      <!-- Usuarios section (solo consultor) -->
+      <div class="config-section hidden" id="config-section-usuarios" style="display:none">
+        <div class="config-section-header">
+          <div>
+            <h3 class="config-section-title">Usuarios</h3>
+            <p class="config-section-desc">Gestión de accesos. El UID se llena automáticamente al primer login. El rol define qué puede ver cada usuario.</p>
+          </div>
+          <button class="btn-add" data-action="add-usuario">+ Agregar usuario</button>
+        </div>
+        <div class="config-roles-legend">
+          <div class="role-legend-item"><span class="role-badge junior" style="font-size:10px">Junior</span> Ver y editar tablas</div>
+          <div class="role-legend-item"><span class="role-badge senior" style="font-size:10px">Senior</span> Junior + gráficas</div>
+          <div class="role-legend-item"><span class="role-badge consultor" style="font-size:10px">Consultor</span> Todo + config + usuarios</div>
+        </div>
+        <div id="list-usuarios" class="config-list"></div>
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast hidden"></div>
+
+<!-- LOADING OVERLAY -->
+<div id="loading-overlay" class="loading-overlay hidden">
+  <div class="loading-spinner"></div>
+  <p id="loading-text">Cargando...</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════════ -->
+<!-- Firebase (modular via CDN compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<!-- SheetJS -->
+<script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+
+<script src="app.js?v=5"></script>
+</body>
+</html>
